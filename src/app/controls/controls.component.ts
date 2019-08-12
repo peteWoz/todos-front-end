@@ -74,6 +74,7 @@ export class ControlsComponent implements OnInit {
     //   console.log (listOfTodo);
     // }
     // console.log('##################################');
+    //bla bla bla
     console.log('b4 update: ' + this.listOfTodos[index].done);
     this.listOfTodos[index].done = !this.listOfTodos[index].done;
     console.log('after update: ' + this.listOfTodos[index].done);
