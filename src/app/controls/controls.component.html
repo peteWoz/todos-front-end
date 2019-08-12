@@ -1,0 +1,94 @@
+<div class="container">
+  <button type="button" class="btn btn-info" (click)="onViewTodos()" *ngIf="!viewClicked; else showLess">View Notes</button>
+  -|-
+  <button type="button" class="btn btn-success" (click)="onAddNote()">Add a Note</button>
+  <ng-template #showLess>
+    <button type="button" class="btn btn-default" (click)="onViewTodos()">Hide Notes</button>
+  </ng-template>
+</div>
+
+
+<div class="table-responsive" *ngIf="viewClicked">
+  <br/>
+  <hr/>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Description</th>
+      <th>Due Date</th>
+      <th>Completed?</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let todoItem of listOfTodos; let i = index">
+    <tr [ngClass]="{success: todoItem.done}">
+      <td class="col-md-1">{{todoItem.id + 1}}</td>
+      <td class="col-md-3">{{todoItem.description}}</td>
+      <td class="col-md-3">{{todoItem.targetDate  | date: 'EEE dd/MM/yyyy'}} @ {{todoItem.time}}</td>
+      <td class="col-md-1"><input type="checkbox" [checked]="todoItem.done" (click)=updateTodoNote(i)>
+      <td><input type="button" class="btn btn-danger" value="Delete" (click)="deleteTodoNote(todoItem.id)"></td>
+    </tr>
+    </tbody>
+  </table>
+  <hr />
+  <button type="button" class="btn btn-success center-block" (click)="hideSecondaryAddButton(); onAddNote()" *ngIf="!secondaryAddClicked">Add a Note</button>
+</div>
+
+<div *ngIf="addClicked">
+  <h2>Add new note</h2>
+  <hr/>
+  <form (ngSubmit)="onSubmit()" #f="ngForm">
+    <div id="user-data" ngModelGroup="Note" #userData="ngModelGroup">
+      <div class="form-group row">
+        <label for="username" class="col-md-2">Your Name</label>
+        <div class="col-md-6">
+          <input
+            type="text"
+            id="username"
+            class="form-control"
+            ngModel
+            name="username"
+            required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="description" class="col-md-2">Description</label>
+        <div class="col-md-6">
+          <input
+            type="text"
+            id="description"
+            class="form-control"
+            ngModel
+            name="description"
+            required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="date" class="col-md-2">Due by</label>
+        <div class="col-md-6">
+          <input
+            type="date"
+            id="date"
+            ngModel
+            name="targetDate"
+            required
+          >
+          <input
+            type="time"
+            id="time"
+            name="time"
+            ngModel
+          >
+        </div>
+      </div>
+    </div>
+    <button
+      class="btn btn-primary"
+      type="submit"
+      [disabled]="!f.valid">Submit
+    </button>
+    -|-
+    <button class="btn btn-default" type="reset" (click)="onHideNote()">Hide</button>
+  </form>
+</div>
